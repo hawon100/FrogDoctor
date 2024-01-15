@@ -6,6 +6,5 @@ using UnityEngine;
 public class EnemyData : BaseData
 {
     public int hp;
-    public int maxHp;
     public int infection;
 }

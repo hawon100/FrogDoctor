@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21ae9db523059024eb9c7f178e5db612, type: 3}
   m_Name: E_Virus
   m_EditorClassIdentifier: 
-  hp: 5
-  maxHp: 5
-  infection_rate: 2
+  hp: 20
+  infection: 5

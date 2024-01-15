@@ -6,7 +6,6 @@ using UnityEngine;
 public class PlayerData : BaseData
 {
     public int hp;
-    public int maxHp;
     public int attack;
     public int attackSpeed;
     public int infectionRate;

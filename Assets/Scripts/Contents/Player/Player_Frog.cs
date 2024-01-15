@@ -4,21 +4,26 @@ using UnityEngine;
 
 public class Player_Frog : PlayerController
 {
+    public static Player_Frog Instance;
+
+    [SerializeField] private PlayerData data;
     [SerializeField] private int hp;
     [SerializeField] private int maxHp;
-    [SerializeField] private int attack;
-    [SerializeField] private int attackSpeed;
-    [SerializeField] private int infectionRate;
 
- 
+    public int attack;
+    [SerializeField] private int attackSpeed;
+
+    public int infectionRate;
 
     private void Start()
     {
-        hp = Managers.Data.LoadData<PlayerData>("Player/P_Frog").hp;
-        maxHp = Managers.Data.LoadData<PlayerData>("Player/P_Frog").maxHp;
-        attack = Managers.Data.LoadData<PlayerData>("Player/P_Frog").attack;
-        attackSpeed = Managers.Data.LoadData<PlayerData>("Player/P_Frog").attackSpeed;
-        infectionRate = Managers.Data.LoadData<PlayerData>("Player/P_Frog").infectionRate;
+        Instance = this;
+
+        hp = data.hp;
+        maxHp = data.hp;
+        attack = data.attack;
+        attackSpeed = data.attackSpeed;
+        infectionRate = data.infectionRate;
     }
 
     private void Update()
@@ -29,7 +34,7 @@ public class Player_Frog : PlayerController
         }
     }
 
-    protected override void OnDamage(int value)
+    public override void OnDamage(int value)
     {
         hp -= value;
     }
