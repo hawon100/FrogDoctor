@@ -56,14 +56,28 @@ public class Enemy_Virus : EnemyController
         rigid.MovePosition(rigid.position + nextVecR);
         rigid.velocity = Vector2.zero;
     }
+    bool temp = true;
 
     private void Hit()
     {
         if (hp <= 0)
         {
-            Destroy(gameObject);
+            if (temp)
+            {
+                anim.SetTrigger("Death");
+            }
+            temp = false;
+        }
+        else
+        {
+            temp = true;
         }
         KnockBack();
+    }
+
+    public void Death()
+    {
+        Destroy(gameObject);
     }
 
     private IEnumerator KnockBack()
@@ -71,7 +85,7 @@ public class Enemy_Virus : EnemyController
         yield return new WaitForFixedUpdate();
         Vector3 playerPos = GameManager.instance.player.transform.position;
         Vector3 dirVec = transform.position - playerPos;
-        rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
+        rigid.AddForce(dirVec.normalized * 5, ForceMode2D.Impulse);
     }
 
     private void PlayerDetect()
@@ -95,15 +109,15 @@ public class Enemy_Virus : EnemyController
                 {
                     if (curInfectionDelay < maxInfectionDelay) return;
 
-                    Player_Frog.Instance.infectionRate += infection * 2;
+                    Player_Frog.Instance.OnDamage(infection * 2);
 
                     curInfectionDelay = 0;
                 }
 
                 if (isHit)
                 {
-                    if(curAttackDelay < maxAttackDelay) return;
-                    Player_Frog.Instance.infectionRate += infection;
+                    if (curAttackDelay < maxAttackDelay) return;
+                    Player_Frog.Instance.OnDamage(infection);
                     curAttackDelay = 0;
                 }
             }

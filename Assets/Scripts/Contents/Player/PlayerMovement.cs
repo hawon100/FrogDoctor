@@ -2,11 +2,11 @@ using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private bool canMove = true;
-    [Tooltip(("If your character does not jump, ignore all below 'Jumping' Character"))]
     [SerializeField] private bool doesCharacterJump = false;
 
     [Header("Base / Root")]
@@ -40,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
     private bool jumping;
 
     private bool facingRight = true;
-    public Vector3 velocity = Vector3.zero;
+    private Vector3 velocity = Vector3.zero;
 
     PlayerInput input;
     Controls controls = new Controls();
@@ -134,7 +134,6 @@ public class PlayerMovement : MonoBehaviour
 
             if (charRB.transform.localPosition != charDefaultRelPos)
             {
-                print("pos diff- local: " + charRB.transform.localPosition + "  --default: " + charDefaultRelPos);
                 var charTransform = charRB.transform;
                 charTransform.localPosition = new Vector2(charDefaultRelPos.x, charTransform.localPosition.y);
             }
@@ -164,7 +163,6 @@ public class PlayerMovement : MonoBehaviour
             charRB.isKinematic = true;
             currentJumps = 0;
             jumping = false;
-            Debug.Log("setting velocity to zero");
         }
     }
 

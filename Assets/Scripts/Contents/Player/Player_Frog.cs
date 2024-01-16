@@ -7,35 +7,33 @@ public class Player_Frog : PlayerController
     public static Player_Frog Instance;
 
     [SerializeField] private PlayerData data;
-    [SerializeField] private int hp;
-    [SerializeField] private int maxHp;
+    public int infection;
+    public int maxInfection;
 
     public int attack;
-    [SerializeField] private int attackSpeed;
-
-    public int infectionRate;
+    public int attackSpeed;
 
     private void Start()
     {
         Instance = this;
 
-        hp = data.hp;
-        maxHp = data.hp;
+        infection = data.infection;
+        maxInfection = 100;
         attack = data.attack;
         attackSpeed = data.attackSpeed;
-        infectionRate = data.infectionRate;
     }
 
     private void Update()
     {
-        if (hp <= 0)
+        if (infection >= 100)
         {
+            infection = 100;
             Debug.Log("Game Over!");
         }
     }
 
     public override void OnDamage(int value)
     {
-        hp -= value;
+        infection += value;
     }
 }
