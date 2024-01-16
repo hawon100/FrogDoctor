@@ -18,7 +18,7 @@ public class Util
         {
             int index = Random.Range(0, maxCount);
 
-            results[index] = defaults[index];
+            results[i] = defaults[index];
             defaults[index] = defaults[maxCount - 1];
 
             maxCount--;

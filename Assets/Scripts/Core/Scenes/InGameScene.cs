@@ -8,7 +8,7 @@ public class InGameScene : BaseScene
     {
         base.Init();
 
-        SceneType = Define.Scene.Game;
+        SceneType = Define.Scene.InGame;
     }
 
     public override void Clear()

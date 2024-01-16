@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 using UnityEngine.UI;
 
 public class ItemController : MonoBehaviour
 {
     public static ItemController Instance;
 
-    [SerializeField] private int ItemSelectCount;
-    [SerializeField] private int SkillSelectCount;
+    [SerializeField] private int attackUp;
+    [SerializeField] private int attackSpeedUp;
+    [SerializeField] private int InfectionRate;
 
     [SerializeField] private ItemData itemData;
     [SerializeField] private SkillData skillData;
@@ -59,16 +61,17 @@ public class ItemController : MonoBehaviour
 
     public void SelectCard()
     {
-        int itemRandomSpawn = Random.Range(0, 5);
-        int skillRandomSpawn = Random.Range(0, 2);
+        int[] itemRandomSpawn = Util.RandomNumbers(itemData.items.Length, 3);
 
-        for (int i = 0; i < ItemSelectCount; i++)
+        for (int i = 0; i < 2; i++)
         {
-            ItemName[i].text = itemName[itemRandomSpawn];
-            ItemIcon[i].sprite = itemIcon[itemRandomSpawn];
-            ItemLog[i].text = itemLog[itemRandomSpawn];
+            ItemName[i].text = itemName[itemRandomSpawn[i]];
+            ItemIcon[i].sprite = itemIcon[itemRandomSpawn[i]];
+            ItemLog[i].text = itemLog[itemRandomSpawn[i]];
             Debug.Log(ItemName[i].text + "/" + ItemIcon[i].sprite + "/" + ItemLog[i].text);
         }
+
+        int skillRandomSpawn = Random.Range(0, 2);
 
         SkillName.text = skillName[skillRandomSpawn];
         SkillIcon.sprite = skillIcon[skillRandomSpawn];
@@ -81,44 +84,79 @@ public class ItemController : MonoBehaviour
         switch(value)
         {
             case "Item 1":
-
+                ItemSelect(1);
                 break;
             case "Item 2":
-
+                ItemSelect(2);
                 break;
             case "Skill":
-
+                SkillSelect();
                 break;
         }
         GameManager.instance.ItemWindow.SetActive(false);
         Time.timeScale = 1.0f;
+        Managers.Map.LoadScene(Define.Scene.InGame);
     }
 
-    private void ItemSelect()
+    private void ItemSelect(int value)
     {
-        for(int i = 0;  i < itemData.items.Length; i++)
+        if(value == 1)
         {
-            if (ItemName[i].text == "공격력+")
+            if (ItemName[0].text == "공격력+")
             {
-                Player_Frog.Instance.attack += 1;
+                Player_Frog.Instance.attack += attackUp;
             }
-            else if (ItemName[i].text == "공격속도+")
+            else if (ItemName[0].text == "공격속도+")
             {
-                Player_Frog.Instance.attackSpeed += 1;
+                Player_Frog.Instance.attackSpeed += attackSpeedUp;
             }
-            else if(ItemName[i].text == "감염률-")
+            else if (ItemName[0].text == "감염률-")
             {
-                Player_Frog.Instance.infection -= 1;
+                Player_Frog.Instance.OnDamage(-InfectionRate);
             }
-            else if(ItemName[i].text == "보호막")
+            else if (ItemName[0].text == "보호막")
             {
+                GameManager.instance.shield.SetActive(true);
+            }
+            else if (ItemName[0].text == "부활")
+            {
+                GameManager.instance.Revival.SetActive(true);
+            }
+        }
+        if(value == 2)
+        {
+            if (ItemName[1].text == "공격력+")
+            {
+                Player_Frog.Instance.attack += attackUp;
+            }
+            else if (ItemName[1].text == "공격속도+")
+            {
+                Player_Frog.Instance.attackSpeed += attackSpeedUp;
+            }
+            else if (ItemName[1].text == "감염률-")
+            {
+                Player_Frog.Instance.OnDamage(-InfectionRate);
+            }
+            else if (ItemName[1].text == "보호막")
+            {
+                GameManager.instance.shield.SetActive(true);
+            }
+            else if (ItemName[1].text == "부활")
+            {
+                GameManager.instance.Revival.SetActive(true);
+            }
+        }
+    }
 
-            }
-            else if(ItemName[i].text == "부활")
-            {
+    private void SkillSelect()
+    {
+        if(SkillName.text == "주사 맞아야겠지?")
+        {
 
-            }
-            Debug.Log(ItemName[i]);
+        }
+        else if(SkillName.text == "분위기 전환!")
+        {
+
         }
     }
 }

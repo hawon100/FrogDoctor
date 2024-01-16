@@ -77,6 +77,17 @@ public class Enemy_Virus : EnemyController
 
     public void Death()
     {
+        int randValue = Random.Range(0, 10);
+
+        if(randValue < 9)
+        {
+            Debug.Log("None");
+        }
+        else if(randValue < 10)
+        {
+            GameManager.instance.vaccineCount = 1;
+        }
+
         Destroy(gameObject);
     }
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tower : MonoBehaviour
@@ -12,9 +13,27 @@ public class Tower : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.F))
             {
-                ItemSelectActive();
-                Time.timeScale = 0.0f;
-                ItemController.Instance.SelectCard();
+                if(GameManager.instance.vaccineCount <= 0)
+                {
+                    if(GameManager.instance.Revival.activeSelf)
+                    {
+                        ItemSelectActive();
+                        Time.timeScale = 0.0f;
+                        ItemController.Instance.SelectCard();
+                        inputText.SetActive(false);
+                    }
+                    else
+                    {
+                        Debug.Log("GameOver");
+                    }
+                }
+                else
+                {
+                    ItemSelectActive();
+                    Time.timeScale = 0.0f;
+                    ItemController.Instance.SelectCard();
+                    inputText.SetActive(false);
+                }
             }
         }
     }
