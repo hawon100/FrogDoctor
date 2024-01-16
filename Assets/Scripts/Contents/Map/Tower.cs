@@ -13,19 +13,12 @@ public class Tower : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.F))
             {
-                if(GameManager.instance.vaccineCount <= 0)
+                if(GameManager.instance.vaccineCount == 0)
                 {
-                    if(GameManager.instance.Revival.activeSelf)
-                    {
-                        ItemSelectActive();
-                        Time.timeScale = 0.0f;
-                        ItemController.Instance.SelectCard();
-                        inputText.SetActive(false);
-                    }
-                    else
-                    {
-                        Debug.Log("GameOver");
-                    }
+                    GameManager.instance.isLive = false;
+                    GameManager.instance.gameOverWindow.SetActive(true);
+                    GameManager.instance.gameOverText.SetActive(true);
+                    Debug.Log("GameOver");
                 }
                 else
                 {
@@ -40,6 +33,7 @@ public class Tower : MonoBehaviour
 
     private void ItemSelectActive()
     {
+        GameManager.instance.isLive = true;
         GameManager.instance.ItemWindow.SetActive(true);
     }
 

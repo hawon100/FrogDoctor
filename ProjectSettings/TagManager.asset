@@ -8,6 +8,7 @@ TagManager:
   - Area
   - Ground
   - Tower
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - 
   - 
   - Base
-  - 
+  - Player
   - 
   - 
   - 
@@ -50,4 +51,7 @@ TagManager:
     locked: 0
   - name: Characters
     uniqueID: 1233516485
+    locked: 0
+  - name: UI
+    uniqueID: 106473189
     locked: 0

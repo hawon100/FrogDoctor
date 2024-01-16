@@ -6,37 +6,42 @@ public class Player_Frog : PlayerController
 {
     public static Player_Frog Instance;
 
-    [SerializeField] private PlayerData data;
-    public int infection;
-    public int maxInfection;
+    public float infection;
+    public float maxInfection;
 
     public int attack;
     public int attackSpeed;
 
-    [SerializeField] private int defenseCount = 0;
+    public int defenseCount = 0;
+
+    public float hSpeed = 10f;
+    public float vSpeed = 6f;
 
     private void Start()
     {
         Instance = this;
-
-        infection = data.infection;
+        infection = GameManager.instance.gameData.infection;
         maxInfection = 100;
-        attack = data.attack;
-        attackSpeed = data.attackSpeed;
-        defenseCount = 10;
+        attack = GameManager.instance.gameData.attack;
+        attackSpeed  = GameManager.instance.gameData.attackSpeed;
     }
 
     private void Update()
     {
         if (infection >= 100)
         {
-            infection = 100;
-            Debug.Log("Game Over!");
-        }
-
-        if (GameManager.instance.shield.activeSelf)
-        {
-            defenseCount = 10;
+            if (GameManager.instance.revival.activeSelf)
+            {
+                infection = 50;
+                GameManager.instance.revival.SetActive(false);
+            }
+            else
+            {
+                infection = 100;
+                Debug.Log("Game Over!");
+                GameManager.instance.gameOverWindow.SetActive(true);
+                GameManager.instance.gameOverText.SetActive(true);
+            }
         }
     }
 
@@ -49,6 +54,7 @@ public class Player_Frog : PlayerController
         else
         {
             infection += value;
+            GameManager.instance.shield.SetActive(false);
         }
     }
 }

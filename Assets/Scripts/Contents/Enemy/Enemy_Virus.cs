@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class Enemy_Virus : EnemyController
 {
-    [SerializeField] private EnemyData data;
+    public static Enemy_Virus Instance;
 
-    [SerializeField] private int hp;
-    [SerializeField] private int maxHp;
-    [SerializeField] private int infection;
-    [SerializeField] private float smoothing = 0.2f;
+    public int score;
+
+    public float hp;
+    public float infection;
+    public float smoothing = 0.2f;
     [Range(0.0f, 100.0f)][SerializeField] private float detectionRadius = 5f;
     [SerializeField] private Vector2 boxRange;
     private Vector2 targetPos;
@@ -27,14 +28,17 @@ public class Enemy_Virus : EnemyController
     {
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        Instance = this;
     }
 
     private void Start()
     {
         targetPos = transform.position;
-        hp = data.hp;
-        maxHp = data.hp;
-        infection = data.infection;
+        hp = GameManager.instance.gameData.enemyHp;
+        infection = GameManager.instance.gameData.enemyInfection;
+        smoothing = GameManager.instance.gameData.enemySpeed;
+        maxAttackDelay = 0.01f * GameManager.instance.gameData.enemyInfectionSpeed;
+        maxInfectionDelay = 0.01f * GameManager.instance.gameData.enemyInfectionSpeed;
     }
 
     private void Update()
@@ -43,7 +47,7 @@ public class Enemy_Virus : EnemyController
         PlayerDetect();
         InfectionDelay();
         AttakcDelay();
-        transform.position = Vector3.Lerp(transform.position, targetPos, smoothing);
+        transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * smoothing); ;
     }
 
     private void FixedUpdate()
@@ -120,7 +124,7 @@ public class Enemy_Virus : EnemyController
                 {
                     if (curInfectionDelay < maxInfectionDelay) return;
 
-                    Player_Frog.Instance.OnDamage(infection * 2);
+                    Player_Frog.Instance.OnDamage((int)infection * 2);
 
                     curInfectionDelay = 0;
                 }
@@ -128,7 +132,7 @@ public class Enemy_Virus : EnemyController
                 if (isHit)
                 {
                     if (curAttackDelay < maxAttackDelay) return;
-                    Player_Frog.Instance.OnDamage(infection);
+                    Player_Frog.Instance.OnDamage((int)infection);
                     curAttackDelay = 0;
                 }
             }

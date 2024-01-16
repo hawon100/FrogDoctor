@@ -32,6 +32,12 @@ public class ItemController : MonoBehaviour
     private Sprite[] skillIcon;
     private string[] skillLog;
 
+    [SerializeField] private int curSyringeCooltime = 5;
+    [SerializeField] private int curChangeCooltime = 5;
+
+    private int maxSyringeCooltime = 5;
+    private int maxChangeCooltime = 5;
+
     private void Awake()
     {
         Instance = this;
@@ -81,7 +87,7 @@ public class ItemController : MonoBehaviour
 
     public void SelectButton(string value)
     {
-        switch(value)
+        switch (value)
         {
             case "Item 1":
                 ItemSelect(1);
@@ -100,7 +106,7 @@ public class ItemController : MonoBehaviour
 
     private void ItemSelect(int value)
     {
-        if(value == 1)
+        if (value == 1)
         {
             if (ItemName[0].text == "공격력+")
             {
@@ -120,10 +126,10 @@ public class ItemController : MonoBehaviour
             }
             else if (ItemName[0].text == "부활")
             {
-                GameManager.instance.Revival.SetActive(true);
+                GameManager.instance.revival.SetActive(true);
             }
         }
-        if(value == 2)
+        if (value == 2)
         {
             if (ItemName[1].text == "공격력+")
             {
@@ -140,23 +146,34 @@ public class ItemController : MonoBehaviour
             else if (ItemName[1].text == "보호막")
             {
                 GameManager.instance.shield.SetActive(true);
+                Player_Frog.Instance.defenseCount = 10;
             }
             else if (ItemName[1].text == "부활")
             {
-                GameManager.instance.Revival.SetActive(true);
+                GameManager.instance.revival.SetActive(true);
             }
         }
     }
 
     private void SkillSelect()
     {
-        if(SkillName.text == "주사 맞아야겠지?")
+        if (SkillName.text == "주사 맞아야겠지?")
         {
-
+            GameManager.instance.syringeSkill.SetActive(true);
+            if(curSyringeCooltime < maxSyringeCooltime)
+            {
+                GameManager.instance.playerSkill.SyringeCoolTime -= 1;
+                curSyringeCooltime++;
+            }
         }
-        else if(SkillName.text == "분위기 전환!")
+        else if (SkillName.text == "분위기 전환!")
         {
-
+            GameManager.instance.changeSkill.SetActive(true);
+            if(curChangeCooltime < maxChangeCooltime)
+            {
+                GameManager.instance.playerSkill.ChangeCoolTime -= 1;
+                curChangeCooltime++;
+            }
         }
     }
 }

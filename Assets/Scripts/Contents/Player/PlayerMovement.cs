@@ -11,8 +11,6 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Base / Root")]
     [SerializeField] private Rigidbody2D baseRB;
-    [SerializeField] private float hSpeed = 10f;
-    [SerializeField] private float vSpeed = 6f;
     [Range(0, 1.0f)]
     [SerializeField] float movementSmooth = 0.5f;
 
@@ -56,6 +54,7 @@ public class PlayerMovement : MonoBehaviour
     {
         charDefaultRelPos = charRB.transform.localPosition;
         targetPos = transform.position;
+        maxAttackDelay = 0.01f * Player_Frog.Instance.attackSpeed;
     }
 
     private void Update()
@@ -82,11 +81,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (!jumping)
         {
-            targetVelocity = new Vector2(controls.HorizontalMove * hSpeed, controls.VerticalMove * vSpeed);
+            targetVelocity = new Vector2(controls.HorizontalMove * Player_Frog.Instance.hSpeed, controls.VerticalMove * Player_Frog.Instance.vSpeed);
         }
         else
         {
-            targetVelocity = new Vector2(controls.HorizontalMove * hSpeed, 0);
+            targetVelocity = new Vector2(controls.HorizontalMove * Player_Frog.Instance.hSpeed, 0);
         }
 
         Vector2 _velocity = Vector3.SmoothDamp(baseRB.velocity, targetVelocity, ref velocity, movementSmooth);
