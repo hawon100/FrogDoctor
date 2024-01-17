@@ -17,6 +17,10 @@ public class Player_Frog : PlayerController
     public float hSpeed = 10f;
     public float vSpeed = 6f;
 
+    [SerializeField] private Animator anim;
+
+    public AudioClip overSound;
+
     private void Start()
     {
         Instance = this;
@@ -39,14 +43,15 @@ public class Player_Frog : PlayerController
             {
                 infection = 100;
                 Debug.Log("Game Over!");
-                GameManager.instance.gameOverWindow.SetActive(true);
                 GameManager.instance.gameOverText.SetActive(true);
+                Managers.Sound.Play(overSound);
             }
         }
     }
 
     public override void OnDamage(int value)
     {
+        anim.SetTrigger("doHit");
         if(defenseCount > 0)
         {
             defenseCount--;

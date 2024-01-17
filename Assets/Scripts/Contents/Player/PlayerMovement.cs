@@ -32,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
 
     [Range(0.0f, 100.0f)][SerializeField] private float detectionRadius = 5f;
 
+    public AudioClip attackSound;
+
     private Vector3 targetPos;
 
     private bool jump;
@@ -184,6 +186,7 @@ public class PlayerMovement : MonoBehaviour
                     virus.OnDamage(Player_Frog.Instance.attack);
                     virus.isHit = true;
                     anim.SetTrigger("doAttack");
+                    Managers.Sound.Play(attackSound);
                 }
 
                 curAttackDelay = 0;

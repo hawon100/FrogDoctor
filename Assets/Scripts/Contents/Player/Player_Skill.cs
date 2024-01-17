@@ -29,6 +29,9 @@ public class Player_Skill : MonoBehaviour
 
     [SerializeField] private Transform fireDirection;
 
+    public AudioClip syringeSound;
+    public AudioClip changeSound;
+
     PlayerInput input;
     Controls controls = new Controls();
 
@@ -78,6 +81,7 @@ public class Player_Skill : MonoBehaviour
                 Debug.Log("Syringe Use Skill");
                 syringeSkillFilter.fillAmount = 1;
                 StartCoroutine(Cooltime("Syringe"));
+                Managers.Sound.Play(syringeSound);
 
                 syringeCurrentCoolTime = syringeCoolTime;
                 syringeCoolTimeCounter.text = "" + syringeCurrentCoolTime;
@@ -100,6 +104,7 @@ public class Player_Skill : MonoBehaviour
                 Debug.Log("Change Use Skill");
                 changeSkillFilter.fillAmount = 1;
                 StartCoroutine(Cooltime("Change"));
+                Managers.Sound.Play(changeSound);
 
                 changeCurrentCoolTime = syringeCoolTime;
                 changeCoolTimeCounter.text = "" + changeCurrentCoolTime;

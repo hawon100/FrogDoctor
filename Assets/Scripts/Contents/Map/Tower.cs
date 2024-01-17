@@ -6,6 +6,7 @@ using UnityEngine;
 public class Tower : MonoBehaviour
 {
     [SerializeField] private GameObject inputText;
+    public AudioClip overSound;
 
     private void Update()
     {
@@ -15,10 +16,10 @@ public class Tower : MonoBehaviour
             {
                 if(GameManager.instance.vaccineCount == 0)
                 {
-                    GameManager.instance.isLive = false;
-                    GameManager.instance.gameOverWindow.SetActive(true);
+                    GameManager.instance.gameData.isLive = false;
                     GameManager.instance.gameOverText.SetActive(true);
                     Debug.Log("GameOver");
+                    Managers.Sound.Play(overSound);
                 }
                 else
                 {
@@ -33,7 +34,7 @@ public class Tower : MonoBehaviour
 
     private void ItemSelectActive()
     {
-        GameManager.instance.isLive = true;
+        GameManager.instance.gameData.isLive = true;
         GameManager.instance.ItemWindow.SetActive(true);
     }
 

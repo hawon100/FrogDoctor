@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New PresentData", menuName = "Data/PresentData", order = int.MinValue)]
 public class PresentData : BaseData
 {
+    public bool isLive;
     public int score;
 
     public float infection;

@@ -10,7 +10,7 @@ public class SpawnManager : MonoBehaviour
     private void Start()
     {
         int rand = Random.Range(0, spawnPoint.Count);
-        for(int i = 0; i < spawnPoint.Count / 2; i++)
+        for(int i = 0; i < 30; i++)
         {
             Instantiate(spawnEnemy, spawnPoint[i].position, Quaternion.identity);
         }

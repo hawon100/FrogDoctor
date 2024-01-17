@@ -24,6 +24,8 @@ public class Enemy_Virus : EnemyController
     [SerializeField] private float curInfectionDelay;
     [SerializeField] private float maxInfectionDelay;
 
+    public AudioClip deathSound;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -66,9 +68,16 @@ public class Enemy_Virus : EnemyController
     {
         if (hp <= 0)
         {
+            Managers.Sound.Play(deathSound);
+
             if (temp)
             {
                 anim.SetTrigger("Death");
+
+                if(!anim.GetCurrentAnimatorStateInfo(0).IsName("Death"))
+                {
+                    Death();
+                }
             }
             temp = false;
         }
@@ -79,7 +88,7 @@ public class Enemy_Virus : EnemyController
         KnockBack();
     }
 
-    public void Death()
+    private void Death()
     {
         int randValue = Random.Range(0, 10);
 
@@ -91,6 +100,8 @@ public class Enemy_Virus : EnemyController
         {
             GameManager.instance.vaccineCount = 1;
         }
+
+        GameManager.instance.score += score;
 
         Destroy(gameObject);
     }

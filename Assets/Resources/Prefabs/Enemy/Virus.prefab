@@ -119,7 +119,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -147,6 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7c709fb347029746af10f908e072b13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  score: 10
   hp: 10
   infection: 5
   smoothing: 0.002
@@ -157,6 +158,7 @@ MonoBehaviour:
   maxAttackDelay: 2
   curInfectionDelay: 0
   maxInfectionDelay: 4
+  deathSound: {fileID: 8300000, guid: 98a1b55ff5051ba499b176592f6dbd2b, type: 3}
 --- !u!95 &1875714019
 Animator:
   serializedVersion: 5

@@ -38,6 +38,8 @@ public class ItemController : MonoBehaviour
     private int maxSyringeCooltime = 5;
     private int maxChangeCooltime = 5;
 
+    public AudioClip selectSound;
+
     private void Awake()
     {
         Instance = this;
@@ -101,7 +103,15 @@ public class ItemController : MonoBehaviour
         }
         GameManager.instance.ItemWindow.SetActive(false);
         Time.timeScale = 1.0f;
+        AudioController.instance.SFXPlay("Select", selectSound);
+        StartCoroutine(LoadSceneDelay());
+    }
+
+    private IEnumerator LoadSceneDelay()
+    {
+        yield return new WaitForSeconds(2.0f);
         Managers.Map.LoadScene(Define.Scene.InGame);
+        yield break;
     }
 
     private void ItemSelect(int value)

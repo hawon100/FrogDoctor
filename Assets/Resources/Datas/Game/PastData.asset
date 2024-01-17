@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c29385fb5baff1f479b3816677374cff, type: 3}
   m_Name: PastData
   m_EditorClassIdentifier: 
+  score: 0
   infection: 0
   attack: 5
   attackSpeed: 200
@@ -19,6 +20,8 @@ MonoBehaviour:
   revival: 0
   skillSyringe: 0
   skillChange: 0
+  skillSyringeCoolTime: 30
+  skillChangeCoolTime: 30
   enemyHp: 10
   enemyInfection: 5
   enemyInfectionSpeed: 400
