@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33c16bb345eca9142a96530ee44b71e1, type: 3}
   m_Name: P_Frog
   m_EditorClassIdentifier: 
-  hp: 100
-  maxHp: 100
-  attack: 10
+  infection: 0
+  attack: 5
   attackSpeed: 10
-  infectionRate: 0

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class PlayerController : MonoBehaviour
 {
-    protected abstract void OnDamage(int value);
+    public abstract void OnDamage(int value);
 }

@@ -4,33 +4,62 @@ using UnityEngine;
 
 public class Player_Frog : PlayerController
 {
-    [SerializeField] private int hp;
-    [SerializeField] private int maxHp;
-    [SerializeField] private int attack;
-    [SerializeField] private int attackSpeed;
-    [SerializeField] private int infectionRate;
+    public static Player_Frog Instance;
 
- 
+    public float infection;
+    public float maxInfection;
+
+    public int attack;
+    public int attackSpeed;
+
+    public int defenseCount = 0;
+
+    public float hSpeed = 10f;
+    public float vSpeed = 6f;
+
+    [SerializeField] private Animator anim;
+
+    public AudioClip overSound;
 
     private void Start()
     {
-        hp = Managers.Data.LoadData<PlayerData>("Player/P_Frog").hp;
-        maxHp = Managers.Data.LoadData<PlayerData>("Player/P_Frog").maxHp;
-        attack = Managers.Data.LoadData<PlayerData>("Player/P_Frog").attack;
-        attackSpeed = Managers.Data.LoadData<PlayerData>("Player/P_Frog").attackSpeed;
-        infectionRate = Managers.Data.LoadData<PlayerData>("Player/P_Frog").infectionRate;
+        Instance = this;
+        infection = GameManager.instance.gameData.infection;
+        maxInfection = 100;
+        attack = GameManager.instance.gameData.attack;
+        attackSpeed  = GameManager.instance.gameData.attackSpeed;
     }
 
     private void Update()
     {
-        if (hp <= 0)
+        if (infection >= 100)
         {
-            Debug.Log("Game Over!");
+            if (GameManager.instance.revival.activeSelf)
+            {
+                infection = 50;
+                GameManager.instance.revival.SetActive(false);
+            }
+            else
+            {
+                infection = 100;
+                Debug.Log("Game Over!");
+                GameManager.instance.gameOverText.SetActive(true);
+                Managers.Sound.Play(overSound);
+            }
         }
     }
 
-    protected override void OnDamage(int value)
+    public override void OnDamage(int value)
     {
-        hp -= value;
+        anim.SetTrigger("doHit");
+        if(defenseCount > 0)
+        {
+            defenseCount--;
+        }
+        else
+        {
+            infection += value;
+            GameManager.instance.shield.SetActive(false);
+        }
     }
 }

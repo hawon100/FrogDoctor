@@ -1,17 +1,16 @@
+using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private bool canMove = true;
-    [Tooltip(("If your character does not jump, ignore all below 'Jumping' Character"))]
     [SerializeField] private bool doesCharacterJump = false;
 
     [Header("Base / Root")]
     [SerializeField] private Rigidbody2D baseRB;
-    [SerializeField] private float hSpeed = 10f;
-    [SerializeField] private float vSpeed = 6f;
     [Range(0, 1.0f)]
     [SerializeField] float movementSmooth = 0.5f;
 
@@ -27,10 +26,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpingGravityScale;
     [SerializeField] private float fallingGravityScale;
     [SerializeField] private Animator anim;
+    [SerializeField] private float curAttackDelay;
+    [SerializeField] private float maxAttackDelay;
+    [SerializeField] private Transform attackRange;
 
     [Range(0.0f, 100.0f)][SerializeField] private float detectionRadius = 5f;
 
-    Vector3 targetPos = Vector3.zero;
+    public AudioClip attackSound;
+
+    private Vector3 targetPos;
 
     private bool jump;
     private bool jumping;
@@ -41,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
     PlayerInput input;
     Controls controls = new Controls();
 
-    private Vector3 charDefaultRelPos, baseDefPos;
+    private Vector3 charDefaultRelPos;
 
     private void Awake()
     {
@@ -51,6 +55,8 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         charDefaultRelPos = charRB.transform.localPosition;
+        targetPos = transform.position;
+        maxAttackDelay = 0.01f * Player_Frog.Instance.attackSpeed;
     }
 
     private void Update()
@@ -61,13 +67,9 @@ public class PlayerMovement : MonoBehaviour
             jump = true;
         }
 
-        if (controls.W_State || controls.A_State || controls.S_State || controls.D_State)
-        {
-            anim.SetBool("isRun", true);
-        }
-
         Move();
-        Attack();
+        EnemyDetect();
+        AttackDelay();
     }
 
     private void Move()
@@ -81,15 +83,23 @@ public class PlayerMovement : MonoBehaviour
 
         if (!jumping)
         {
-            targetVelocity = new Vector2(controls.HorizontalMove * hSpeed, controls.VerticalMove * vSpeed);
+            targetVelocity = new Vector2(controls.HorizontalMove * Player_Frog.Instance.hSpeed, controls.VerticalMove * Player_Frog.Instance.vSpeed);
+        }
+        else
+        {
+            targetVelocity = new Vector2(controls.HorizontalMove * Player_Frog.Instance.hSpeed, 0);
         }
 
         Vector2 _velocity = Vector3.SmoothDamp(baseRB.velocity, targetVelocity, ref velocity, movementSmooth);
         baseRB.velocity = _velocity;
 
-        if (controls.HorizontalMove == 0)
+        if (controls.HorizontalMove == 0 && controls.VerticalMove == 0)
         {
             anim.SetBool("isRun", false);
+        }
+        else
+        {
+            anim.SetBool("isRun", true);
         }
 
         if (doesCharacterJump)
@@ -125,7 +135,6 @@ public class PlayerMovement : MonoBehaviour
 
             if (charRB.transform.localPosition != charDefaultRelPos)
             {
-                print("pos diff- local: " + charRB.transform.localPosition + "  --default: " + charDefaultRelPos);
                 var charTransform = charRB.transform;
                 charTransform.localPosition = new Vector2(charDefaultRelPos.x, charTransform.localPosition.y);
             }
@@ -155,35 +164,45 @@ public class PlayerMovement : MonoBehaviour
             charRB.isKinematic = true;
             currentJumps = 0;
             jumping = false;
-            Debug.Log("setting velocity to zero");
         }
-    }
-
-    private void Attack()
-    {
-        EnemyDetect();
-        
     }
 
     private void EnemyDetect()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(attackRange.position, detectionRadius);
 
         foreach (Collider2D collider in colliders)
         {
             if (collider.CompareTag("Enemy"))
             {
-                targetPos = collider.transform.position;
-                anim.SetTrigger("doAttack");
+                if (curAttackDelay < maxAttackDelay)
+                    return;
 
+                targetPos = collider.transform.position;
+
+                if (collider.GetComponent<Enemy_Virus>() != null)
+                {
+                    Enemy_Virus virus = collider.GetComponent<Enemy_Virus>();
+                    virus.OnDamage(Player_Frog.Instance.attack);
+                    virus.isHit = true;
+                    anim.SetTrigger("doAttack");
+                    Managers.Sound.Play(attackSound);
+                }
+
+                curAttackDelay = 0;
             }
         }
+    }
+
+    private void AttackDelay()
+    {
+        curAttackDelay += Time.deltaTime;
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        Gizmos.DrawWireSphere(attackRange.position, detectionRadius);
 
         if (doesCharacterJump)
         {

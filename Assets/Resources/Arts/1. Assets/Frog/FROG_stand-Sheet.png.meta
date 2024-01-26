@@ -120,10 +120,10 @@ TextureImporter:
       name: FROG_stand-Sheet_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 9
-        width: 47
-        height: 43
+        x: 0
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,10 +141,10 @@ TextureImporter:
       name: FROG_stand-Sheet_1
       rect:
         serializedVersion: 2
-        x: 71
-        y: 9
-        width: 47
-        height: 44
+        x: 64
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,10 +162,10 @@ TextureImporter:
       name: FROG_stand-Sheet_2
       rect:
         serializedVersion: 2
-        x: 135
-        y: 9
-        width: 47
-        height: 43
+        x: 128
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -183,10 +183,10 @@ TextureImporter:
       name: FROG_stand-Sheet_3
       rect:
         serializedVersion: 2
-        x: 199
-        y: 9
-        width: 47
-        height: 42
+        x: 192
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

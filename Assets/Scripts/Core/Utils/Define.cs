@@ -14,7 +14,8 @@ public class Define
     public enum Scene
     {
         Unknown,
-        Game,
+        Main,
+        InGame,
     }
 
     public enum Sound
